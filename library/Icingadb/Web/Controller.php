@@ -11,7 +11,6 @@ use Icinga\Module\Icingadb\Common\Database;
 use Icinga\Module\Icingadb\Compat\MonitoringRestrictions;
 use Icinga\Module\Icingadb\Compat\UrlMigrator;
 use Icinga\Module\Icingadb\Widget\BaseItemList;
-use Icinga\Module\Icingadb\Widget\FilterControl;
 use Icinga\Module\Icingadb\Widget\ViewModeSwitcher;
 use ipl\Html\Html;
 use ipl\Html\ValidHtml;
@@ -115,42 +114,6 @@ class Controller extends CompatController
         $this->params->shift($sortControl->getSortParam());
 
         return $sortControl;
-    }
-
-    /**
-     * Create and return the FilterControl
-     *
-     * @param Query $query
-     * @param array $preserveParams
-     *
-     * @return FilterControl
-     */
-    public function createFilterControl(Query $query, array $preserveParams = null)
-    {
-        $request = clone $this->getRequest();
-        $params = clone $this->params;
-
-        if (! empty($preserveParams)) {
-            foreach ($preserveParams as $param) {
-                if (! $params->has($param) && ($value = $request->getUrl()->getParam($param)) !== null) {
-                    $params->set($param, $value);
-                }
-            }
-        }
-
-        $request->getUrl()->setParams($params);
-
-        $filterControl = new FilterControl($query, $preserveParams);
-        $filterControl->handleRequest($request);
-
-        // We're cloning the params, the editor does it, so we have to shift these ourselves
-        $this->params->shift('addFilter');
-        $this->params->shift('removeFilter');
-        $this->params->shift('stripFilter');
-        $this->params->shift('modifyFilter');
-        $this->params->shift('q');
-
-        return $filterControl;
     }
 
     /**
