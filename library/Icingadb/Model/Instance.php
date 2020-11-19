@@ -27,32 +27,37 @@ class Instance extends Model
         return [
             'environment_id',
             'endpoint_id',
-            'heartbeat',
-            'responsible',
+            'icingadb_active',
+            'icingadb_heartbeat',
+            'icingadb_hostname',
+            'icingadb_start_time',
+            'icinga2_heartbeat',
+            'icinga2_version',
+            'icinga2_start_time',
             'icinga2_active_host_checks_enabled',
             'icinga2_active_service_checks_enabled',
             'icinga2_event_handlers_enabled',
             'icinga2_flap_detection_enabled',
             'icinga2_notifications_enabled',
             'icinga2_performance_data_enabled',
-            'icinga2_start_time',
-            'icinga2_version'
         ];
     }
 
     public function getDefaultSort()
     {
-        return 'responsible desc';
+        // TODO: enum('y', 'n') sorting is strange and the following doesn't work
+        // return 'CAST(icingadb_active AS CHAR) desc';
+        return 'icingadb_active asc';
     }
 
     public function createBehaviors(Behaviors $behaviors)
     {
         $behaviors->add(new Timestamp([
-            'heartbeat',
+            'icinga2_heartbeat',
             'icinga2_start_time'
         ]));
         $behaviors->add(new BoolCast([
-            'responsible',
+            'icingadb_active',
             'icinga2_active_host_checks_enabled',
             'icinga2_active_service_checks_enabled',
             'icinga2_event_handlers_enabled',

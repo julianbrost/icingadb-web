@@ -20,7 +20,7 @@ class Health extends BaseHtmlElement
 
     protected function assemble()
     {
-        if ($this->data->heartbeat > time() - 60) {
+        if ($this->data->icinga2_heartbeat > time() - 60) {
             $this->add(Html::tag('div', ['class' => 'icinga-health up'], [
                 Html::sprintf(
                     t('Icinga 2 is up and running %s', '...since <timespan>'),
@@ -31,7 +31,7 @@ class Health extends BaseHtmlElement
             $this->add(Html::tag('div', ['class' => 'icinga-health down'], [
                 Html::sprintf(
                     t('Icinga 2 or Icinga DB is not running %s', '...since <timespan>'),
-                    new TimeSince($this->data->heartbeat)
+                    new TimeSince($this->data->icinga2_heartbeat)
                 )
             ]));
         }
@@ -47,7 +47,7 @@ class Health extends BaseHtmlElement
             ),
             new VerticalKeyValue(
                 t('Last Heartbeat'),
-                new TimeAgo($this->data->heartbeat)
+                new TimeAgo($this->data->icinga2_heartbeat)
             ),
             new VerticalKeyValue(
                 t('Active Icinga 2 Endpoint'),
